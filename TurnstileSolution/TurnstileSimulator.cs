@@ -36,32 +36,44 @@ public class TurnstileSimulator
         int currentTime = 0;
         TurnstileDirection? lastDirection = null; // null = idle (not used in previous second)
         int processedCount = 0;
+        int nextUnprocessedIndex = 0; // Track next person to check
 
         while (processedCount < n)
         {
             // Find all people who have arrived by current time and are not yet processed
-            var available = new List<Person>();
-            foreach (var person in people)
+            var entering = new List<Person>();
+            var exiting = new List<Person>();
+            
+            // People array is sorted by arrival time and index, so we can iterate efficiently
+            for (int i = 0; i < n; i++)
             {
+                var person = people[i];
                 if (!person.IsProcessed && person.ArrivalTime <= currentTime)
                 {
-                    available.Add(person);
+                    if (person.IsEntering)
+                        entering.Add(person);
+                    else
+                        exiting.Add(person);
                 }
             }
 
-            if (available.Count == 0)
+            if (entering.Count == 0 && exiting.Count == 0)
             {
                 // No one is waiting - advance time to next arrival
-                currentTime = GetNextArrivalTime(people);
-                lastDirection = null; // Turnstile becomes idle
+                // Find next unprocessed person's arrival time
+                while (nextUnprocessedIndex < n && people[nextUnprocessedIndex].IsProcessed)
+                    nextUnprocessedIndex++;
+                
+                if (nextUnprocessedIndex < n)
+                {
+                    currentTime = people[nextUnprocessedIndex].ArrivalTime;
+                    lastDirection = null; // Turnstile becomes idle
+                }
                 continue;
             }
 
-            // Separate into entering and exiting, sorted by index (Rule 4)
-            var entering = available.Where(p => p.IsEntering).OrderBy(p => p.Index).ToList();
-            var exiting = available.Where(p => p.IsExiting).OrderBy(p => p.Index).ToList();
-
             // Select the next person based on priority rules
+            // Lists are already sorted by index (from array iteration order)
             Person nextPerson = SelectNextPerson(entering, exiting, lastDirection);
 
             // Process the person
@@ -101,14 +113,6 @@ public class TurnstileSimulator
         }
 
         return rule.SelectNext(entering, exiting);
-    }
-
-    /// <summary>
-    /// Gets the next arrival time from unprocessed people.
-    /// </summary>
-    private int GetNextArrivalTime(Person[] people)
-    {
-        return people.Where(p => !p.IsProcessed).Min(p => p.ArrivalTime);
     }
 
     /// <summary>
