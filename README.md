@@ -104,7 +104,7 @@ Clear separation of concerns with distinct layers:
 
 - **Domain Layer**: Core entities (`Person`, `TurnstileDirection`)
 - **Rules Layer**: Priority strategies (`IPriorityRule` implementations)
-- **Simulation Layer**: Orchestration (`TurnstileSimulator`, `TurnstileQueue`)
+- **Simulation Layer**: Orchestration (`TurnstileSimulator`)
 - **Application Layer**: I/O handling (`Program`)
 
 ### Key Components
@@ -138,14 +138,10 @@ Clear separation of concerns with distinct layers:
 
 #### Simulation Layer
 
-**`TurnstileQueue`**
-- Manages waiting people using `SortedSet<Person>`
-- Automatic ordering by index (Rule 4)
-- Separates entering vs. exiting queues
-
 **`TurnstileSimulator`**
 - Main simulation engine
 - Tracks current time and last direction
+- Manages waiting people directly using lists
 - Selects appropriate priority rule
 - Coordinates the simulation loop
 - Includes comprehensive input validation
@@ -156,8 +152,7 @@ Clear separation of concerns with distinct layers:
 - Each class has one clear purpose
 - `Person` manages person state
 - Rules encapsulate priority logic
-- `TurnstileQueue` manages queues
-- `TurnstileSimulator` orchestrates simulation
+- `TurnstileSimulator` orchestrates simulation and manages queues
 
 ? **Open/Closed Principle**
 - Open for extension (can add new rules without modifying existing code)
@@ -185,7 +180,6 @@ TurnstileSolution/
 ??? IdlePreferExitRule.cs          # Rule 1 implementation
 ??? PreviousExitPreferEnterRule.cs # Rule 2 implementation
 ??? PreviousEnterPreferExitRule.cs # Rule 3 implementation
-??? TurnstileQueue.cs              # Queue management
 ??? TurnstileSimulator.cs          # Simulation engine
 ??? Program.cs                      # Console application
 ??? DEVELOPMENT_LOG.md             # Complete development history
@@ -193,7 +187,6 @@ TurnstileSolution/
 TurnstileSolution.Tests/
 ??? PersonTests.cs                  # Unit tests for Person
 ??? PriorityRuleTests.cs           # Unit tests for rules
-??? TurnstileQueueTests.cs         # Unit tests for queue
 ??? TurnstileSimulatorTests.cs     # Integration tests
 ```
 
@@ -209,10 +202,9 @@ This project was built following the **Red-Green-Refactor** cycle:
 
 ### Test Coverage
 
-**20 tests** covering:
+**15 tests** covering:
 - ? Unit tests for `Person` class (4 tests)
 - ? Unit tests for priority rules (5 tests)
-- ? Unit tests for `TurnstileQueue` (5 tests)
 - ? Integration tests for complete simulation (6 tests)
   - Both provided examples
   - Same direction priority
@@ -258,7 +250,7 @@ dotnet test
 
 **Expected result:**
 ```
-Passed! - Failed: 0, Passed: 20, Skipped: 0, Total: 20
+Passed! - Failed: 0, Passed: 15, Skipped: 0, Total: 15
 ```
 
 ### Test Individual Examples

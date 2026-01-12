@@ -52,13 +52,12 @@ public class TurnstileSimulator
             if (available.Count == 0)
             {
                 // No one is waiting - advance time to next arrival
-                int nextArrival = GetNextArrivalTime(people);
-                currentTime = nextArrival;
+                currentTime = GetNextArrivalTime(people);
                 lastDirection = null; // Turnstile becomes idle
                 continue;
             }
 
-            // Separate into entering and exiting, sorted by index
+            // Separate into entering and exiting, sorted by index (Rule 4)
             var entering = available.Where(p => p.IsEntering).OrderBy(p => p.Index).ToList();
             var exiting = available.Where(p => p.IsExiting).OrderBy(p => p.Index).ToList();
 
@@ -109,15 +108,7 @@ public class TurnstileSimulator
     /// </summary>
     private int GetNextArrivalTime(Person[] people)
     {
-        int nextArrival = int.MaxValue;
-        foreach (var person in people)
-        {
-            if (!person.IsProcessed)
-            {
-                nextArrival = Math.Min(nextArrival, person.ArrivalTime);
-            }
-        }
-        return nextArrival;
+        return people.Where(p => !p.IsProcessed).Min(p => p.ArrivalTime);
     }
 
     /// <summary>

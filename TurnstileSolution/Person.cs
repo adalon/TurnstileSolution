@@ -85,13 +85,4 @@ public class Person : IComparable<Person>
 
         return Index.CompareTo(other.Index);
     }
-
-    /// <summary>
-    /// Returns a string representation of this person.
-    /// </summary>
-    public override string ToString()
-    {
-        return $"Person {Index}: {Direction} at time {ArrivalTime}" +
-               (IsProcessed ? $" (passed at {PassTime})" : " (waiting)");
-    }
 }
