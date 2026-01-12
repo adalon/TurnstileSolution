@@ -182,12 +182,22 @@ TurnstileSolution/
 ??? PreviousEnterPreferExitRule.cs # Rule 3 implementation
 ??? TurnstileSimulator.cs          # Simulation engine
 ??? Program.cs                      # Console application
-??? DEVELOPMENT_LOG.md             # Complete development history
 
 TurnstileSolution.Tests/
 ??? PersonTests.cs                  # Unit tests for Person
 ??? PriorityRuleTests.cs           # Unit tests for rules
 ??? TurnstileSimulatorTests.cs     # Integration tests
+
+Documentation/
+??? README.md                              # This file - project overview
+??? DEVELOPMENT_LOG.md                     # Complete development history
+??? CLEANUP_SUMMARY.md                     # Code cleanup documentation
+??? DEPENDENCY_INVERSION_IMPROVEMENT.md    # SOLID improvements
+??? PERFORMANCE_OPTIMIZATIONS.md           # Performance analysis
+??? PERF_SUMMARY.md                        # Performance quick reference
+??? COMMIT_MESSAGE.txt                     # Cleanup commit message
+??? COMMIT_MESSAGE_DI.txt                  # DI fix commit message
+??? COMMIT_MESSAGE_PERF.txt                # Performance commit message
 ```
 
 ## Development Approach
@@ -292,6 +302,129 @@ The solution includes comprehensive validation:
 
 This is a demonstration project for educational purposes.
 
-## Development Log
+## Documentation
 
-For a complete history of the development process, design decisions, and conversations that led to this solution, see [DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md).
+This repository includes comprehensive documentation covering the development process, design decisions, and optimization journey:
+
+### ?? Core Documentation
+
+#### **[README.md](README.md)** (This file)
+Main project documentation covering:
+- Problem description and rules
+- Architecture and design patterns
+- Building and running instructions
+- Key insights and learnings
+
+#### **[DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md)**
+Complete conversation history documenting:
+- Initial problem statement and clarifications
+- TDD approach and planning discussions
+- All implementation decisions and iterations
+- Test-driven development process
+- Bug fixes and rule corrections
+- Full audit trail of the development session
+
+### ?? Optimization Documentation
+
+#### **[CLEANUP_SUMMARY.md](CLEANUP_SUMMARY.md)**
+Code cleanup phase covering:
+- Removal of unused `TurnstileQueue` abstraction
+- Elimination of dead code and test artifacts
+- Code simplification (13% reduction)
+- Before/after metrics and benefits
+- YAGNI and KISS principles applied
+
+#### **[DEPENDENCY_INVERSION_IMPROVEMENT.md](DEPENDENCY_INVERSION_IMPROVEMENT.md)**
+SOLID principles improvement covering:
+- Fixed Dependency Inversion Principle violation
+- Changed from concrete types to `IPriorityRule` interface
+- Reduced coupling and improved testability
+- Design pattern alignment (Strategy Pattern)
+- Future extensibility opportunities
+
+#### **[PERFORMANCE_OPTIMIZATIONS.md](PERFORMANCE_OPTIMIZATIONS.md)**
+Detailed performance analysis covering:
+- Identified bottlenecks (O(n² log n) complexity)
+- Eliminated redundant operations (LINQ, sorting)
+- Optimized algorithms (single-pass processing)
+- Complexity reduction and allocation improvements
+- Benchmark comparisons and trade-offs
+- Code quality impact analysis
+
+#### **[PERF_SUMMARY.md](PERF_SUMMARY.md)**
+Quick performance summary covering:
+- Key optimizations at a glance
+- Performance metrics comparison table
+- Expected real-world impact (20-30% speedup)
+- Verification results
+- Future optimization opportunities
+
+### ?? Commit Messages
+
+Pre-written comprehensive commit messages for version control:
+
+#### **[COMMIT_MESSAGE.txt](COMMIT_MESSAGE.txt)**
+Git commit message for cleanup phase:
+- Removal of unused code and abstractions
+- Simplification changes
+- Impact metrics and benefits
+
+#### **[COMMIT_MESSAGE_DI.txt](COMMIT_MESSAGE_DI.txt)**
+Git commit message for dependency inversion fix:
+- SOLID principles improvement
+- Interface-based design
+- Coupling reduction
+
+#### **[COMMIT_MESSAGE_PERF.txt](COMMIT_MESSAGE_PERF.txt)**
+Git commit message for performance optimizations:
+- Complexity improvements
+- Allocation reductions
+- Benchmark data
+
+### ?? Documentation Summary
+
+| Document | Purpose | Audience |
+|----------|---------|----------|
+| **README.md** | Project overview | All users |
+| **DEVELOPMENT_LOG.md** | Complete development history | Developers, reviewers |
+| **CLEANUP_SUMMARY.md** | Code cleanup details | Maintainers |
+| **DEPENDENCY_INVERSION_IMPROVEMENT.md** | SOLID improvements | Architects, senior devs |
+| **PERFORMANCE_OPTIMIZATIONS.md** | Performance deep-dive | Performance engineers |
+| **PERF_SUMMARY.md** | Quick perf overview | Tech leads, managers |
+| **COMMIT_MESSAGE_*.txt** | Version control | Git users |
+
+### ?? How to Use This Documentation
+
+**For New Contributors:**
+1. Start with **README.md** (this file) for project overview
+2. Read **DEVELOPMENT_LOG.md** to understand design decisions
+3. Review **CLEANUP_SUMMARY.md** to see code evolution
+
+**For Code Reviewers:**
+1. Check **COMMIT_MESSAGE_*.txt** for change context
+2. Read specific optimization docs for technical details
+3. Verify test coverage in **README.md**
+
+**For Performance Analysis:**
+1. Start with **PERF_SUMMARY.md** for quick overview
+2. Deep-dive into **PERFORMANCE_OPTIMIZATIONS.md** for details
+3. Cross-reference with code changes in commits
+
+**For Architecture Review:**
+1. Read **DEPENDENCY_INVERSION_IMPROVEMENT.md** for SOLID compliance
+2. Review **CLEANUP_SUMMARY.md** for design evolution
+3. Check **DEVELOPMENT_LOG.md** for decision rationale
+
+### ? Documentation Quality
+
+All documentation includes:
+- ? Clear problem statements
+- ? Before/after comparisons
+- ? Metrics and measurements
+- ? Code examples
+- ? Benefits and trade-offs
+- ? Verification results
+
+---
+
+**For the complete development journey from initial problem to optimized solution, start with [DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md)!**
