@@ -39,7 +39,7 @@ public class PriorityRuleTests
     }
 
     [Fact]
-    public void PreviousExitPreferEnterRule_BothQueuesPresent_SelectsEnter()
+    public void PreviousExitPreferEnterRule_BothQueuesPresent_SelectsExit()
     {
         // Arrange
         var rule = new PreviousExitPreferEnterRule();
@@ -50,12 +50,12 @@ public class PriorityRuleTests
         var selected = rule.SelectNext(entering, exiting);
 
         // Assert
-        Assert.Equal(0, selected.Index);
-        Assert.Equal(TurnstileDirection.Enter, selected.Direction);
+        Assert.Equal(1, selected.Index);
+        Assert.Equal(TurnstileDirection.Exit, selected.Direction);
     }
 
     [Fact]
-    public void PreviousEnterPreferExitRule_BothQueuesPresent_SelectsExit()
+    public void PreviousEnterPreferExitRule_BothQueuesPresent_SelectsEnter()
     {
         // Arrange
         var rule = new PreviousEnterPreferExitRule();
@@ -66,8 +66,8 @@ public class PriorityRuleTests
         var selected = rule.SelectNext(entering, exiting);
 
         // Assert
-        Assert.Equal(1, selected.Index);
-        Assert.Equal(TurnstileDirection.Exit, selected.Direction);
+        Assert.Equal(0, selected.Index);
+        Assert.Equal(TurnstileDirection.Enter, selected.Direction);
     }
 
     [Fact]

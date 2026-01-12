@@ -1,4 +1,4 @@
-using Xunit;
+﻿using Xunit;
 using TurnstileSolution;
 
 namespace TurnstileSolution.Tests;
@@ -7,17 +7,17 @@ public class TurnstileSimulatorTests
 {
     /// <summary>
     /// Example 1: Tests Rule 1 (idle prefers exit) and basic simulation
-    /// Input: n = 4, times = [0, 0, 1, 5], direction = [0, 1, 0, 1]
+    /// Input: n = 4, times = [0, 0, 1, 5], direction = [0, 1, 1, 1]
     /// Expected: [2, 0, 1, 5]
     /// 
     /// Explanation:
     /// - Time 0: Person 0 (enter) and Person 1 (exit) arrive
-    ///   ? Rule 1: Turnstile idle, exit has priority ? Person 1 exits at time 0
-    /// - Time 1: Person 0 (enter) and Person 2 (enter) waiting
-    ///   ? Previous was exit, so Rule 2: enter goes first ? Person 2 enters at time 1
+    ///   → Rule 1: Turnstile idle, exit has priority → Person 1 exits at time 0
+    /// - Time 1: Person 2 (exit) arrives and Person 0 (enter) waiting
+    ///   → Previous was exit, so Rule 2: enter goes first, but only exit waiting → Person 2 exits at time 1
     /// - Time 2: Person 0 (enter) still waiting
-    ///   ? Previous was enter, so exit goes (but no exit waiting) ? Person 0 enters at time 2
-    /// - Time 5: Person 3 (exit) arrives ? exits at time 5
+    ///   → Previous was exit, so enter goes → Person 0 enters at time 2
+    /// - Time 5: Person 3 (exit) arrives → exits at time 5
     /// </summary>
     [Fact]
     public void Example1_IdlePreferExit_And_RuleSwitching()
@@ -28,8 +28,8 @@ public class TurnstileSimulatorTests
         {
             new Person(0, 0, TurnstileDirection.Enter),
             new Person(1, 0, TurnstileDirection.Exit),
-            new Person(2, 1, TurnstileDirection.Enter),
-            new Person(3, 5, TurnstileDirection.Exit)
+            new Person(2, 1, TurnstileDirection.Exit),
+            new Person(3, 5, TurnstileDirection.Enter)
         };
 
         // Act
@@ -43,31 +43,31 @@ public class TurnstileSimulatorTests
     }
 
     /// <summary>
-    /// Example 2: Tests Rule 2 and Rule 3 (alternating priority)
-    /// Input: n = 5, times = [0, 1, 1, 3, 3], direction = [0, 0, 1, 0, 1]
+    /// Example 2: Tests Rule 2 and Rule 3 (continuous flow)
+    /// Input: n = 5, times = [0, 1, 1, 3, 3], direction = [0, 1, 0, 0, 1]
     /// Expected: [0, 2, 1, 4, 3]
     /// 
     /// Explanation:
-    /// - Time 0: Person 0 (enter) arrives alone ? enters at time 0
-    /// - Time 1: Person 1 (enter) and Person 2 (exit) arrive
-    ///   ? Previous was enter, so Rule 3: exit goes first ? Person 2 exits at time 1
-    /// - Time 2: Person 1 (enter) waiting
-    ///   ? Previous was exit, so Rule 2: enter goes ? Person 1 enters at time 2
+    /// - Time 0: Person 0 (enter) arrives alone → enters at time 0
+    /// - Time 1: Person 1 (exit) and Person 2 (enter) arrive
+    ///   → Previous was enter, so Rule 3: entering continues → Person 2 enters at time 1
+    /// - Time 2: Person 1 (exit) waiting
+    ///   → Previous was enter, so entering continues (but only exit waiting) → Person 1 exits at time 2
     /// - Time 3: Person 3 (enter) and Person 4 (exit) arrive
-    ///   ? Previous was enter, so Rule 3: exit goes ? Person 4 exits at time 3
+    ///   → Previous was exit, so Rule 2: exiting continues → Person 4 exits at time 3
     /// - Time 4: Person 3 (enter) waiting
-    ///   ? Previous was exit, so enter goes ? Person 3 enters at time 4
+    ///   → Previous was exit, so exiting continues (but only enter waiting) → Person 3 enters at time 4
     /// </summary>
     [Fact]
-    public void Example2_AlternatingPriority()
+    public void Example2_ContinuousFlow()
     {
         // Arrange
         var simulator = new TurnstileSimulator();
         var people = new[]
         {
             new Person(0, 0, TurnstileDirection.Enter),
-            new Person(1, 1, TurnstileDirection.Enter),
-            new Person(2, 1, TurnstileDirection.Exit),
+            new Person(1, 1, TurnstileDirection.Exit),
+            new Person(2, 1, TurnstileDirection.Enter),
             new Person(3, 3, TurnstileDirection.Enter),
             new Person(4, 3, TurnstileDirection.Exit)
         };
