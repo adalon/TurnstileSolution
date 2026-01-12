@@ -5,9 +5,9 @@ namespace TurnstileSolution;
 /// </summary>
 public class TurnstileSimulator
 {
-    private readonly IdlePreferExitRule _idleRule;
-    private readonly PreviousExitPreferEnterRule _previousExitRule;
-    private readonly PreviousEnterPreferExitRule _previousEnterRule;
+    private readonly IPriorityRule _idleRule;
+    private readonly IPriorityRule _previousExitRule;
+    private readonly IPriorityRule _previousEnterRule;
 
     /// <summary>
     /// Initializes a new instance of the TurnstileSimulator class.

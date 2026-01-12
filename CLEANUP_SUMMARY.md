@@ -28,6 +28,8 @@ This document summarizes the cleanup operations performed to simplify the codeba
    - ? Simplified `GetNextArrivalTime()` using LINQ `Min()` instead of manual loop
    - Changed from 11 lines to 3 lines
    - More concise and readable
+   - ? **Fixed Dependency Inversion**: Changed field types from concrete implementations to `IPriorityRule` interface
+   - Reduced coupling and improved SOLID compliance
 
 ### Documentation Updates
 
