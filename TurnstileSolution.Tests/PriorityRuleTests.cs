@@ -1,7 +1,7 @@
 using Xunit;
-using TurnstileSolution.Domain;
-using TurnstileSolution.Rules;
+using TurnstileSolution;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TurnstileSolution.Tests;
 

@@ -1,5 +1,5 @@
 using Xunit;
-using TurnstileSolution.Domain;
+using TurnstileSolution;
 
 namespace TurnstileSolution.Tests;
 

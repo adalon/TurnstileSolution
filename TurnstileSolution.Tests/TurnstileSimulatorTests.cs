@@ -1,6 +1,5 @@
 using Xunit;
-using TurnstileSolution.Domain;
-using TurnstileSolution.Simulation;
+using TurnstileSolution;
 
 namespace TurnstileSolution.Tests;
 
@@ -8,17 +7,17 @@ public class TurnstileSimulatorTests
 {
     /// <summary>
     /// Example 1: Tests Rule 1 (idle prefers exit) and basic simulation
-    /// Input: n = 4, times = [0, 0, 1, 5], direction = [0, 1, 1, 0]
+    /// Input: n = 4, times = [0, 0, 1, 5], direction = [0, 1, 0, 1]
     /// Expected: [2, 0, 1, 5]
     /// 
     /// Explanation:
     /// - Time 0: Person 0 (enter) and Person 1 (exit) arrive
     ///   ? Rule 1: Turnstile idle, exit has priority ? Person 1 exits at time 0
-    /// - Time 1: Person 0 (enter) and Person 2 (exit) waiting
-    ///   ? Previous was exit, so Rule 2: enter goes first ? Person 2 exits at time 1
+    /// - Time 1: Person 0 (enter) and Person 2 (enter) waiting
+    ///   ? Previous was exit, so Rule 2: enter goes first ? Person 2 enters at time 1
     /// - Time 2: Person 0 (enter) still waiting
-    ///   ? Previous was exit, so enter goes ? Person 0 enters at time 2
-    /// - Time 5: Person 3 (enter) arrives ? enters at time 5
+    ///   ? Previous was enter, so exit goes (but no exit waiting) ? Person 0 enters at time 2
+    /// - Time 5: Person 3 (exit) arrives ? exits at time 5
     /// </summary>
     [Fact]
     public void Example1_IdlePreferExit_And_RuleSwitching()
@@ -29,8 +28,8 @@ public class TurnstileSimulatorTests
         {
             new Person(0, 0, TurnstileDirection.Enter),
             new Person(1, 0, TurnstileDirection.Exit),
-            new Person(2, 1, TurnstileDirection.Exit),
-            new Person(3, 5, TurnstileDirection.Enter)
+            new Person(2, 1, TurnstileDirection.Enter),
+            new Person(3, 5, TurnstileDirection.Exit)
         };
 
         // Act
